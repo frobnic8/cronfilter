@@ -4,10 +4,16 @@
 """
 
 import sys
+from croniter import croniter
+from datetime import datetime
 from logging import warning
 
 __author__ = 'erskin@eldritch.org'
 __version__ = '1.0.0'
+
+
+def _usage(command):
+    return 'usage: ' + command + ' "cron expression" [filename ...]'
 
 
 def cronmatch(expression, date):
@@ -15,7 +21,7 @@ def cronmatch(expression, date):
     given.
 
     """
-    return False
+    return croniter(expression, date).get_next(datetime) == date
 
 
 def cronfilter(expression, dates):
@@ -34,9 +40,9 @@ def cronfilter_file(expression, filehandle):
     results = []
     for line in filehandle:
         line = line.strip()
-        # dateparse(line)?
-        if cronmatch(expression, line):
-            results.append(line)
+        date = datetime.strptime(line, "%Y-%m-%dT%H:%M:%SZ")
+        if cronmatch(expression, date):
+            results.append(date)
     return results
 
 
@@ -49,10 +55,10 @@ def main(args=sys.argv):
     # If there were no arguments, we have no cron expression
     # which is required
     if len(args) < 2:
-        # print _usage()
+        print _usage(args[0])
         sys.exit(2)
     elif args[1] in ('-H', '-h', '-?', '--help'):
-        # print _usage()
+        print _usage(args[0])
         sys.exit()
     # Otherwise consider the command line arguments after the first
     # as filenames to read.

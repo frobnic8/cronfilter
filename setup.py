@@ -16,4 +16,5 @@ setup(name='cronfilter',
       entry_points={'console_scripts': ['cronfilter = cronfilter:main']},
       long_description=open('README.md').read(),
       provides=['cronfilter'],
+      install_requires=['croniter >= 0.3.5'],
 )
