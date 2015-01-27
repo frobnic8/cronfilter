@@ -1,12 +1,8 @@
 cronfilter
 ==========
-     ____   ___  _____ ____    _   _  ___ _____  __        _____  ____  _  __
-    |  _ \ / _ \| ____/ ___|  | \ | |/ _ \_   _| \ \      / / _ \|  _ \| |/ /
-    | | | | | | |  _| \___ \  |  \| | | | || |    \ \ /\ / / | | | |_) | ' /
-    | |_| | |_| | |___ ___) | | |\  | |_| || |     \ V  V /| |_| |  _ <| . \
-    |____/ \___/|_____|____/  |_| \_|\___/ |_|      \_/\_/  \___/|_| \_\_|\_\
-
-This is just a prototype of an idea I'm trying out.
+This may or may not work. It's a prototype of an idea I'm trying out.
+I've poked at it a little and it MIGHT work, but I still need real test
+cases to be safe and sure. Caveat Emptor.
 
 Filter a list of dates based on a cron expression.
 
