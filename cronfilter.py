@@ -5,7 +5,7 @@
 
 import sys
 from croniter import croniter
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.parser import parse
 from logging import warning
 
@@ -22,7 +22,8 @@ def cronmatch(expression, date):
     given.
 
     """
-    return croniter(expression, date).get_next(datetime) == date
+    return croniter(expression,
+                    date - timedelta(minutes=1)).get_next(datetime) == date
 
 
 def cronfilter(expression, dates):
@@ -49,8 +50,8 @@ def cronfilter_file(expression, filehandle):
 def main(args=sys.argv):
     """Filter a list of dates based on a cron expression."""
 
-    matched = False
     filenames = []
+    results = []
 
     # If there were no arguments, we have no cron expression
     # which is required
@@ -69,16 +70,17 @@ def main(args=sys.argv):
         for filename in filenames:
             # Support the convention of using '-' to refer to standard input.
             if filename == '-':
-                failures += cronfilter_file(expression, sys.stdin)
+                results += cronfilter_file(expression, sys.stdin)
             # Skip any file names that don't actually exists.
             elif not os.path.isfile(filename):
                 warning('Skipping non-file ' + filename)
             # Process the lines in the file.
             else:
                 with open(filename) as input_file:
-                    failures += cronfilter_file(expression, input_file)
+                    results += cronfilter_file(expression, input_file)
 
-    if matched:
+    if results:
+        print '\n'.join([str(date) for date in results])
         sys.exit(0)
     else:
         sys.exit(1)
