@@ -6,6 +6,7 @@
 import sys
 from croniter import croniter
 from datetime import datetime
+from dateutil.parser import parse
 from logging import warning
 
 __author__ = 'erskin@eldritch.org'
@@ -39,8 +40,7 @@ def cronfilter_file(expression, filehandle):
     """Return a list of dates from a file which match the expression."""
     results = []
     for line in filehandle:
-        line = line.strip()
-        date = datetime.strptime(line, "%Y-%m-%dT%H:%M:%SZ")
+        date = parse(line.strip())
         if cronmatch(expression, date):
             results.append(date)
     return results
